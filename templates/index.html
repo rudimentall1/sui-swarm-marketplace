@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sui Swarm Marketplace</title>
+    <style>
+        body { font-family: monospace; background: #0a0f1e; color: #0f0; padding: 20px; }
+        .contract { background: #1e2a3a; padding: 10px; border-radius: 5px; }
+        .tx { border-bottom: 1px solid #0f0; padding: 10px; }
+        h1 { color: #0f0; }
+    </style>
+</head>
+<body>
+    <h1>Sui Swarm Marketplace</h1>
+    <div class="contract">
+        <strong>Contract:</strong> {{ contract }}
+    </div>
+    <h2>Last Transactions</h2>
+    <div id="transactions">Loading...</div>
+    <script>
+        fetch('/api/transactions')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('transactions');
+                container.innerHTML = data.map(tx => `
+                    <div class="tx">
+                        <strong>Hash:</strong> ${tx.hash}<br>
+                        <strong>State hash:</strong> ${tx.state_hash}<br>
+                        <strong>Leader:</strong> ${tx.leader}<br>
+                        <strong>Time:</strong> ${tx.time}
+                    </div>
+                `).join('');
+            });
+    </script>
+</body>
+</html>
